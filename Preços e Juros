@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Exercícios JavaScript</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .box { border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; border-radius: 8px; }
+        input, select, button { margin: 5px 0; padding: 8px; }
+    </style>
+</head>
+<body>
+
+    <div class="box">
+        <h3>Calculadora Simples</h3>
+        <input type="number" id="num1" placeholder="Número 1">
+        <input type="number" id="num2" placeholder="Número 2"><br>
+        
+        <button onclick="calcular('+')">Somar</button>
+        <button onclick="calcular('-')">Subtrair</button>
+        <button onclick="calcular('*')">Multiplicar</button>
+        <button onclick="calcular('/')">Dividir</button>
+
+        <p><strong>Resultado: </strong><span id="resultadoCalc">...</span></p>
+    </div>
+
+    <div class="box">
+        <h3>Calculadora de Parcelas</h3>
+        <form id="formParcelas">
+            <label>Preço à vista (R$):</label><br>
+            <input type="number" id="precoProduto" step="0.01" required><br>
+            
+            <label>Parcelamento:</label><br>
+            <select id="qtdParcelas">
+                <option value="1">1x (À vista)</option>
+                <option value="3">3x (+10% acréscimo)</option>
+                <option value="5">5x (+20% acréscimo)</option>
+            </select><br>
+            
+            <button type="button" onclick="calcularParcelamento()">Calcular</button>
+        </form>
+
+        <div id="historicoParcelas">
+            <p><strong>Resultados:</strong></p>
+        </div>
+    </div>
+
+    <script>
+        // Lógica Exercício 1 - Calculadora
+        function calcular(operador) {
+            let n1 = parseFloat(document.getElementById('num1').value);
+            let n2 = parseFloat(document.getElementById('num2').value);
+            let res;
+
+            if (isNaN(n1) || isNaN(n2)) {
+                document.getElementById('resultadoCalc').innerText = "Insira números válidos!";
+                return;
+            }
+
+            if (operador === '+') res = n1 + n2;
+            else if (operador === '-') res = n1 - n2;
+            else if (operador === '*') res = n1 * n2;
+            else if (operador === '/') res = n1 / n2;
+
+            document.getElementById('resultadoCalc').innerText = res;
+        }
+
+        // Lógica Exercício 2 - Parcelamento
+        function calcularParcelamento() {
+            let precoBase = parseFloat(document.getElementById('precoProduto').value);
+            let parcelas = parseInt(document.getElementById('qtdParcelas').value);
+            
+            if (isNaN(precoBase) || precoBase <= 0) return;
+
+            let precoTotal = precoBase;
+
+            // Aplica os acréscimos corretos
+            if (parcelas === 3) {
+                precoTotal = precoBase * 1.10;
+            } else if (parcelas === 5) {
+                precoTotal = precoBase * 1.20;
+            }
+
+            let valorParcela = precoTotal / parcelas;
+
+            // Criar o texto do resultado
+            let mensagem = `<p>Você escolheu ${parcelas}x. Total: R$ ${precoTotal.toFixed(2)} | Valor da parcela: R$ ${valorParcela.toFixed(2)}</p>`;
+
+            // Adiciona na tela preservando o histórico usando +=
+            document.getElementById('historicoParcelas').innerHTML += mensagem;
+        }
+    </script>
+</body>
+</html>
+
