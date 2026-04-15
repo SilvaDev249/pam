@@ -1,0 +1,98 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Manipulação de Vetor</title>
+</head>
+<body>
+    <h2>Abra o Console (F12) para ver o relatório!</h2>
+    <script>
+        // Recebe 10 números e armazena em um vetor
+        let vetorOriginal = [];
+        for (let i = 0; i < 10; i++) {
+            let numero = parseFloat(prompt(`Digite o número ${i + 1} de 10:`)) || 0;
+            vetorOriginal.push(numero);
+        }
+
+        // ================= PARTE 1 - ESTATÍSTICAS =================
+        let soma = vetorOriginal.reduce((acc, val) => acc + val, 0);
+        let media = soma / vetorOriginal.length;
+
+        // Ordenação manual (Bubble Sort) para não usar o .sort() 
+        let vetorOrdenado = [...vetorOriginal];
+        for (let i = 0; i < vetorOrdenado.length; i++) {
+            for (let j = 0; j < vetorOrdenado.length - 1 - i; j++) {
+                if (vetorOrdenado[j] > vetorOrdenado[j + 1]) {
+                    let temp = vetorOrdenado[j];
+                    vetorOrdenado[j] = vetorOrdenado[j + 1];
+                    vetorOrdenado[j + 1] = temp;
+                }
+            }
+        }
+
+        // Mediana (como o vetor tem tamanho par fixo de 10, é a média das posições centrais 4 e 5)
+        let mediana = (vetorOrdenado[4] + vetorOrdenado[5]) / 2;
+
+        // ================= PARTE 2 - ANÁLISES =================
+        let pos = 0, neg = 0, zero = 0;
+        let pares = 0, impares = 0;
+        let desvios = [];
+
+        vetorOriginal.forEach(num => {
+            if (num > 0) pos++;
+            else if (num < 0) neg++;
+            else zero++;
+
+            if (num % 2 === 0) pares++;
+            else impares++;
+
+            // Desvio simples de cada valor
+            desvios.push(num - media);
+        });
+
+        let percPares = (pares / vetorOriginal.length) * 100;
+        let percImpares = (impares / vetorOriginal.length) * 100;
+
+        // ================= PARTE 3 - MANIPULAÇÃO =================
+        let vetorSemDuplicados = [...new Set(vetorOriginal)];
+        let vetorAoQuadrado = vetorOriginal.map(num => num ** 2);
+        let maioresQueMedia = vetorOriginal.filter(num => num > media);
+
+        // ================= EXTRA =================
+        let vetorExtra = [...vetorOriginal];
+        
+        let menorNumero = Math.min(...vetorExtra);
+        let indexMenor = vetorExtra.indexOf(menorNumero);
+        vetorExtra.splice(indexMenor, 1); // Remove o menor número
+
+        vetorExtra.splice(2, 0, 100); // Insere 100 na posição 2
+        vetorExtra[5] = 999; // Substitui posição 5 por 999
+
+        let copiaSemTresPrimeiros = vetorExtra.slice(3); // Remove os 3 primeiros
+
+        // ================= EXIBIÇÃO =================
+        console.log("=== RELATÓRIO COMPLETO ===");
+        console.log("Parte 1:");
+        console.log("Soma:", soma);
+        console.log("Média:", media.toFixed(2));
+        console.log("Mediana:", mediana);
+        
+        console.log("\nParte 2:");
+        console.log(`Positivos: ${pos}, Negativos: ${neg}, Zeros: ${zero}`);
+        console.log(`Pares: ${percPares}%, Ímpares: ${percImpares}%`);
+        console.log("Desvios da Média:", desvios.map(d => d.toFixed(2)));
+        
+        console.log("\nParte 3:");
+        console.log("Vetor Ordenado (sem .sort):", vetorOrdenado);
+        console.log("Vetor sem duplicados:", vetorSemDuplicados);
+        console.log("Vetor ao quadrado:", vetorAoQuadrado);
+        console.log("Maior que a média:", maioresQueMedia);
+        
+        console.log("\nExtra:");
+        console.log("Vetor manipulado (100 pos 2, 999 pos 5, sem menor valor):", vetorExtra);
+        console.log(copiaSemTresPrimeiros);
+    </script>
+</body>
+</html>
+
